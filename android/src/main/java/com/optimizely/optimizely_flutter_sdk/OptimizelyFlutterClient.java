@@ -68,6 +68,18 @@ import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+public class NoOpEventHandler extends DefaultEventHandler {
+
+    public NoOpEventHandler(Context context) {
+        super(context);
+    }
+
+    @Override
+    public void dispatchEvent(LogEvent logEvent) {
+        // Do nothing
+    }
+}
+
 public class OptimizelyFlutterClient {
     protected Context context;
     protected Activity activity;
@@ -102,14 +114,11 @@ public class OptimizelyFlutterClient {
 
         Utils.setDefaultLogLevel(argumentsParser.getDefaultLogLevel());
 
-        // DefaultEventHandler eventHandler = DefaultEventHandler.getInstance(context);
-        EventHandler eventHandler = new EventHandler() {
-            @Override
-            public void dispatchEvent(LogEvent logEvent) throws Exception {
-                // Send event to our log endpoint as documented in
-                // https://developers.optimizely.com/x/events/api/index.html
-            }
-        };
+        //DefaultEventHandler eventHandler = DefaultEventHandler.getInstance(context);
+
+        // Using NoOpEventHandler to avoid sending events to the server
+        // and to avoid creating a new instance of DefaultEventHandler
+        NoOpEventHandler eventHandler = new NoOpEventHandler(context);
         eventHandler.setDispatchInterval(-1L);
         NotificationCenter notificationCenter = new NotificationCenter();
         // Here we are using the builder options to set batch size

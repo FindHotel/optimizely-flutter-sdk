@@ -52,6 +52,7 @@ import com.optimizely.ab.optimizelydecision.OptimizelyDecideOption;
 import com.optimizely.ab.optimizelydecision.OptimizelyDecision;
 import com.optimizely.optimizely_flutter_sdk.helper_classes.ArgumentsParser;
 import com.optimizely.optimizely_flutter_sdk.helper_classes.Utils;
+import com.optimizely.optimizely_flutter_sdk.NoOpEventHandler;
 
 import static com.optimizely.optimizely_flutter_sdk.helper_classes.Constants.*;
 import static com.optimizely.optimizely_flutter_sdk.helper_classes.Constants.RequestParameterKey.DISABLE_ODP;
@@ -67,18 +68,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
-
-public class NoOpEventHandler extends DefaultEventHandler {
-
-    public NoOpEventHandler(Context context) {
-        super(context);
-    }
-
-    @Override
-    public void dispatchEvent(LogEvent logEvent) {
-        // Do nothing
-    }
-}
 
 public class OptimizelyFlutterClient {
     protected Context context;

@@ -102,7 +102,12 @@ public class OptimizelyFlutterClient {
 
         Utils.setDefaultLogLevel(argumentsParser.getDefaultLogLevel());
 
-        DefaultEventHandler eventHandler = DefaultEventHandler.getInstance(context);
+        // DefaultEventHandler eventHandler = DefaultEventHandler.getInstance(context);
+        val eventHandler = object :EventHandler {
+            override fun dispatchEvent(logEvent:LogEvent){
+                // void event dispatcher
+            }
+        }
         eventHandler.setDispatchInterval(-1L);
         NotificationCenter notificationCenter = new NotificationCenter();
         // Here we are using the builder options to set batch size
@@ -521,8 +526,8 @@ public class OptimizelyFlutterClient {
             data = new HashMap<>();
         }
 
-       optimizelyClient.sendODPEvent(type, action, identifiers, data);
-       result.success(createResponse());
+        optimizelyClient.sendODPEvent(type, action, identifiers, data);
+        result.success(createResponse());
     }
 
     /// Fetch all qualified segments for the user context.
@@ -537,7 +542,7 @@ public class OptimizelyFlutterClient {
         try {
             userContext.fetchQualifiedSegments((fetchQualifiedResult) -> {
                 result.success(createResponse(fetchQualifiedResult));
-            },segmentOptions);
+            }, segmentOptions);
 
         } catch (Exception ex) {
             result.success(createResponse(ex.getMessage()));
@@ -655,7 +660,7 @@ public class OptimizelyFlutterClient {
             optimizelyClient.getNotificationCenter().clearNotificationListeners(getNotificationListenerType(type));
         }
         if (notificationIdsTracker.containsKey(sdkKey)) {
-            for (Integer id: callBackIds) {
+            for (Integer id : callBackIds) {
                 notificationIdsTracker.get(sdkKey).remove(id);
             }
         }

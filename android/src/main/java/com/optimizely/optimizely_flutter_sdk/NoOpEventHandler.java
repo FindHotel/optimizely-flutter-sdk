@@ -1,6 +1,6 @@
 package com.optimizely.optimizely_flutter_sdk;
 
-import com.optimizely.ab.android.event_handler.EventHandler;
+import com.optimizely.ab.event.EventHandler;
 import com.optimizely.ab.event.LogEvent;
 
 public class NoOpEventHandler implements EventHandler {

@@ -103,11 +103,13 @@ public class OptimizelyFlutterClient {
         Utils.setDefaultLogLevel(argumentsParser.getDefaultLogLevel());
 
         // DefaultEventHandler eventHandler = DefaultEventHandler.getInstance(context);
-        val eventHandler = object :EventHandler {
-            override fun dispatchEvent(logEvent:LogEvent){
-                // void event dispatcher
+        EventHandler eventHandler = new EventHandler() {
+            @Override
+            public void dispatchEvent(LogEvent logEvent) throws Exception {
+                // Send event to our log endpoint as documented in
+                // https://developers.optimizely.com/x/events/api/index.html
             }
-        }
+        };
         eventHandler.setDispatchInterval(-1L);
         NotificationCenter notificationCenter = new NotificationCenter();
         // Here we are using the builder options to set batch size

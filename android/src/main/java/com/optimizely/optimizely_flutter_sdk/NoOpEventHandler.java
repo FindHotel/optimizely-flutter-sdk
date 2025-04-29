@@ -1,14 +1,9 @@
 package com.optimizely.optimizely_flutter_sdk;
 
-import android.content.Context;
-import com.optimizely.ab.android.event_handler.DefaultEventHandler;
+import com.optimizely.ab.android.event_handler.EventHandler;
 import com.optimizely.ab.event.LogEvent;
 
-public class NoOpEventHandler extends DefaultEventHandler {
-
-    public NoOpEventHandler(Context context) {
-        super(context);
-    }
+public class NoOpEventHandler implements EventHandler {
 
     @Override
     public void dispatchEvent(LogEvent logEvent) {

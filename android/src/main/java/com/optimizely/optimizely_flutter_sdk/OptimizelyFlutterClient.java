@@ -108,7 +108,6 @@ public class OptimizelyFlutterClient {
         // Using NoOpEventHandler to avoid sending events to the server
         // and to avoid creating a new instance of DefaultEventHandler
         NoOpEventHandler eventHandler = new NoOpEventHandler();
-        eventHandler.setDispatchInterval(-1L);
         NotificationCenter notificationCenter = new NotificationCenter();
         // Here we are using the builder options to set batch size
         // to 5 events and flush interval to a minute.

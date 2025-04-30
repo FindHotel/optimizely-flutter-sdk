@@ -19,6 +19,17 @@ import UIKit
 import Optimizely
 import Foundation
 
+
+class CustomEventDispatcher: OPTEventDispatcher {
+
+    func dispatchEvent(event: EventForDispatch, completionHandler: DispatchCompletionHandler?) {
+    }
+
+    func flushEvents() {
+    }
+}
+
+
 /// A wrapper around Optimizely Swift SDK that communicates with flutter using a channel
 public class SwiftOptimizelyFlutterSdkPlugin: NSObject, FlutterPlugin {
     // to keep track of notification listener id's in-case they are to be removed in future
@@ -35,7 +46,7 @@ public class SwiftOptimizelyFlutterSdkPlugin: NSObject, FlutterPlugin {
     var uuid: String {
         return UUID().uuidString
     }
-    
+
     /// Registers optimizely_flutter_sdk channel to communicate with the flutter sdk to receive requests and send responses
     public static func register(with registrar: FlutterPluginRegistrar) {
         channel = FlutterMethodChannel(name: "optimizely_flutter_sdk", binaryMessenger: registrar.messenger())
@@ -99,7 +110,7 @@ public class SwiftOptimizelyFlutterSdkPlugin: NSObject, FlutterPlugin {
         if let _maxQueueSize = parameters[RequestParameterKey.eventMaxQueueSize] as? Int {
             maxQueueSize = _maxQueueSize
         }
-        let eventDispatcher = DefaultEventDispatcher(batchSize: batchSize, backingStore: .file, dataStoreName: "OPTEventQueue", timerInterval: timeInterval, maxQueueSize: maxQueueSize)
+        let eventDispatcher = CustomEventDispatcher()
         
         var decideOptions: [String]?
         if let options = parameters[RequestParameterKey.decideOptions] as? [String] {

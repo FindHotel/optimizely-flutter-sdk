@@ -31,8 +31,12 @@ ext {
 }
 
 android {
+    namespace = "com.optimizely.optimizely_flutter_sdk"
     compileSdkVersion compile_sdk_version
     buildToolsVersion build_tools_version
+    buildFeatures {
+        buildConfig true
+    }
 
     defaultConfig {
         minSdkVersion min_sdk_version
@@ -76,7 +80,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10"
     implementation "com.optimizely.ab:android-sdk:5.0.0"
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
-    implementation ('com.google.guava:guava:19.0') {
-        exclude group:'com.google.guava', module:'listenablefuture'
-    }
+    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
 }

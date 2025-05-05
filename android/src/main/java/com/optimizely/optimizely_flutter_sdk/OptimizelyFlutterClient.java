@@ -52,6 +52,7 @@ import com.optimizely.ab.optimizelydecision.OptimizelyDecideOption;
 import com.optimizely.ab.optimizelydecision.OptimizelyDecision;
 import com.optimizely.optimizely_flutter_sdk.helper_classes.ArgumentsParser;
 import com.optimizely.optimizely_flutter_sdk.helper_classes.Utils;
+import com.optimizely.optimizely_flutter_sdk.NoOpEventHandler;
 
 import static com.optimizely.optimizely_flutter_sdk.helper_classes.Constants.*;
 import static com.optimizely.optimizely_flutter_sdk.helper_classes.Constants.RequestParameterKey.DISABLE_ODP;
@@ -102,8 +103,11 @@ public class OptimizelyFlutterClient {
 
         Utils.setDefaultLogLevel(argumentsParser.getDefaultLogLevel());
 
-        DefaultEventHandler eventHandler = DefaultEventHandler.getInstance(context);
-        eventHandler.setDispatchInterval(-1L);
+        //DefaultEventHandler eventHandler = DefaultEventHandler.getInstance(context);
+
+        // Using NoOpEventHandler to avoid sending events to the server
+        // and to avoid creating a new instance of DefaultEventHandler
+        NoOpEventHandler eventHandler = new NoOpEventHandler();
         NotificationCenter notificationCenter = new NotificationCenter();
         // Here we are using the builder options to set batch size
         // to 5 events and flush interval to a minute.
@@ -521,8 +525,8 @@ public class OptimizelyFlutterClient {
             data = new HashMap<>();
         }
 
-       optimizelyClient.sendODPEvent(type, action, identifiers, data);
-       result.success(createResponse());
+        optimizelyClient.sendODPEvent(type, action, identifiers, data);
+        result.success(createResponse());
     }
 
     /// Fetch all qualified segments for the user context.
@@ -537,7 +541,7 @@ public class OptimizelyFlutterClient {
         try {
             userContext.fetchQualifiedSegments((fetchQualifiedResult) -> {
                 result.success(createResponse(fetchQualifiedResult));
-            },segmentOptions);
+            }, segmentOptions);
 
         } catch (Exception ex) {
             result.success(createResponse(ex.getMessage()));
@@ -655,7 +659,7 @@ public class OptimizelyFlutterClient {
             optimizelyClient.getNotificationCenter().clearNotificationListeners(getNotificationListenerType(type));
         }
         if (notificationIdsTracker.containsKey(sdkKey)) {
-            for (Integer id: callBackIds) {
+            for (Integer id : callBackIds) {
                 notificationIdsTracker.get(sdkKey).remove(id);
             }
         }

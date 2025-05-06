@@ -10,7 +10,7 @@
 # Optimizely
 -keep class com.optimizely.optimizely_flutter_sdk.** {*;}
 -keep class com.fasterxml.jackson.** {*;}
--keep class javax.mail.** { *; }
 # Logback
 -keep class ch.qos.** { *; }
+-dontwarn javax.mail.** # Suppress warnings for javax.mail, we don't use SMTP
 ##---------------End: proguard configuration ----------

@@ -10,6 +10,7 @@
 # Optimizely
 -keep class com.optimizely.optimizely_flutter_sdk.** {*;}
 -keep class com.fasterxml.jackson.** {*;}
+-keep class javax.mail.** { *; }
 # Logback
 -keep class ch.qos.** { *; }
 ##---------------End: proguard configuration ----------

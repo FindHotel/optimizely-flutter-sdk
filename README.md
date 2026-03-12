@@ -1,3 +1,7 @@
+# Fork of main repository
+Maintained by flutter mobile team at vio
+
+
 # Optimizely Flutter SDK
 [![Pub Version](https://img.shields.io/pub/v/optimizely_flutter_sdk?color=blueviolet)](https://pub.dev/packages/optimizely_flutter_sdk)
 [![Pub](https://img.shields.io/pub/v/optimizely_flutter_sdk.svg)](https://pub.dev/packages/optimizely_flutter_sdk)

@@ -41,7 +41,8 @@ public class SwiftOptimizelyFlutterSdkPlugin: NSObject, FlutterPlugin {
     
     // to communicate with optimizely flutter sdk
     static var channel: FlutterMethodChannel!
-    
+    private static weak var attachedMessenger: FlutterBinaryMessenger?
+
     // to track each unique userContext
     var uuid: String {
         return UUID().uuidString
@@ -49,7 +50,12 @@ public class SwiftOptimizelyFlutterSdkPlugin: NSObject, FlutterPlugin {
 
     /// Registers optimizely_flutter_sdk channel to communicate with the flutter sdk to receive requests and send responses
     public static func register(with registrar: FlutterPluginRegistrar) {
-        channel = FlutterMethodChannel(name: "optimizely_flutter_sdk", binaryMessenger: registrar.messenger())
+        if channel != nil {
+            return
+        }
+        let messenger = registrar.messenger()
+        attachedMessenger = messenger
+        channel = FlutterMethodChannel(name: "optimizely_flutter_sdk", binaryMessenger: messenger)
         let instance = SwiftOptimizelyFlutterSdkPlugin()
         registrar.addMethodCallDelegate(instance, channel: channel)
 
@@ -61,7 +67,17 @@ public class SwiftOptimizelyFlutterSdkPlugin: NSObject, FlutterPlugin {
                                                 taskQueue: taskQueue)
         OptimizelyFlutterLogger.setChannel(loggerChannel)
     }
-    
+
+    public func detachFromEngine(for registrar: FlutterPluginRegistrar) {
+        guard registrar.messenger() === Self.attachedMessenger else {
+            return
+        }
+        Self.channel?.setMethodCallHandler(nil)
+        Self.channel = nil
+        Self.attachedMessenger = nil
+        OptimizelyFlutterLogger.clearChannel()
+    }
+
     /// Part of FlutterPlugin protocol to handle communication with flutter sdk.
     /// All method handlers receive a main-thread-safe result callback so that
     /// any handler calling result() from a background thread (e.g. async SDK
